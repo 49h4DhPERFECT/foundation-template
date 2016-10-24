@@ -7,8 +7,7 @@ var concat = require('gulp-concat');
 var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
 var cache = require('gulp-cache');
-var imagemin = require('gulp-imagemin');
-var pngquant = require('imagemin-pngquant');
+var image = require('gulp-image');
 var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
 
@@ -25,7 +24,14 @@ var jsConcat = [
 
 gulp.task('scss', function () {
     return gulp.src('assets/scss/*.scss')
-        .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'compressed'}).on('error', sass.logError)) //foundation includes
+        .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'extended'}).on('error', sass.logError))
+        .pipe(gulp.dest('assets/css'))
+        .pipe(connect.reload());
+});
+
+gulp.task('scss_build', function () {
+    return gulp.src('assets/scss/*.scss')
+        .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(gulp.dest('assets/css'))
         .pipe(connect.reload());
 });
@@ -72,10 +78,17 @@ gulp.task('js', function () {
 
 gulp.task('images', function () {
     gulp.src('assets/images/*')
-        .pipe(cache((imagemin({
-            progressive: true,
-            svgoPlugins: [{removeViewBox: false}], use: [pngquant()]
-        }))))
+        .pipe(cache(image({
+            pngquant: true,
+            optipng: true,
+            zopflipng: true,
+            jpegRecompress: false,
+            jpegoptim: true,
+            mozjpeg: true,
+            gifsicle: true,
+            svgo: true,
+            concurrent: 10
+        })))
         .pipe(gulp.dest('public/images/'))
         .pipe(connect.reload());
 });
@@ -107,3 +120,6 @@ gulp.task('default', ['compile', 'connect', 'watch']);
 
 //Compile
 gulp.task('compile', ['clean', 'scss', 'css', 'fonts', 'js', 'images', 'html']);
+
+//Build
+gulp.task('build', ['clean', 'scss_build', 'css', 'fonts', 'js', 'images', 'html']);
