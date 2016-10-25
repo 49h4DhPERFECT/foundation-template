@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var panini = require('panini');
 var del = require('del');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var concat = require('gulp-concat');
 var babel = require('gulp-babel');
@@ -24,30 +25,31 @@ var jsConcat = [
 
 gulp.task('scss', function () {
     return gulp.src('assets/scss/*.scss')
-        .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'extended'}).on('error', sass.logError))
-        .pipe(gulp.dest('assets/css'))
+        .pipe(sourcemaps.init())
+        .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'expanded'}).on('error', sass.logError))
+        .pipe(sourcemaps.write({includeContent: false}))
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(autoprefixer({
+            browsers: browsers
+        }))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('public/css'))
         .pipe(connect.reload());
 });
 
 gulp.task('scss_build', function () {
     return gulp.src('assets/scss/*.scss')
         .pipe(sass({includePaths: ['node_modules/foundation-sites/scss/'], outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(gulp.dest('assets/css'))
-        .pipe(connect.reload());
-});
-
-gulp.task('css', function(){
-    gulp.src('assets/css/*.css')
         .pipe(autoprefixer({
             browsers: browsers
         }))
-        .pipe(gulp.dest('public/css/'))
+        .pipe(gulp.dest('public/css'))
         .pipe(connect.reload());
 });
 
 gulp.task('html',function () {
     panini.refresh();
-    gulp.src('assets/html/pages/*.html')
+    gulp.src('assets/html/pages/**/*.html')
         .pipe(panini({
             root: 'assets/html/pages/',
             layouts: 'assets/html/layouts/',
@@ -119,7 +121,7 @@ gulp.task('watch', function () {
 gulp.task('default', ['compile', 'connect', 'watch']);
 
 //Compile
-gulp.task('compile', ['clean', 'scss', 'css', 'fonts', 'js', 'images', 'html']);
+gulp.task('compile', ['clean', 'scss', 'fonts', 'js', 'images', 'html']);
 
 //Build
-gulp.task('build', ['clean', 'scss_build', 'css', 'fonts', 'js', 'images', 'html']);
+gulp.task('build', ['clean', 'scss_build', 'fonts', 'js', 'images', 'html']);
