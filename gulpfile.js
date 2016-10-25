@@ -49,7 +49,7 @@ gulp.task('scss_build', function () {
 
 gulp.task('html',function () {
     panini.refresh();
-    gulp.src('assets/html/pages/*.html')
+    gulp.src('assets/html/pages/**/*.html')
         .pipe(panini({
             root: 'assets/html/pages/',
             layouts: 'assets/html/layouts/',
