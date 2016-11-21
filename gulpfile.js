@@ -10,7 +10,7 @@ var uglify = require('gulp-uglify');
 var cache = require('gulp-cache');
 var image = require('gulp-image');
 var livereload = require('gulp-livereload');
-var connect = require('gulp-connect');
+var browserSync = require('browser-sync').create();
 
 var browsers = ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3'];
 
@@ -34,7 +34,7 @@ gulp.task('scss', function () {
         }))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/css'))
-        .pipe(connect.reload());
+        .pipe(browserSync.stream());
 });
 
 gulp.task('scss_build', function () {
@@ -44,7 +44,7 @@ gulp.task('scss_build', function () {
             browsers: browsers
         }))
         .pipe(gulp.dest('public/css'))
-        .pipe(connect.reload());
+        .pipe(browserSync.stream());
 });
 
 gulp.task('html',function () {
@@ -58,13 +58,13 @@ gulp.task('html',function () {
             helpers: 'assets/html/helpers/'
         }))
         .pipe(gulp.dest('public/'))
-        .pipe(connect.reload());
+        .pipe(browserSync.stream());
 });
 
 gulp.task('fonts', function () {
    gulp.src('assets/fonts/*')
        .pipe(gulp.dest('public/fonts/'))
-       .pipe(connect.reload());
+       .pipe(browserSync.stream());
 });
 
 gulp.task('js', function () {
@@ -75,7 +75,7 @@ gulp.task('js', function () {
         }))
         .pipe(uglify())
         .pipe(gulp.dest('public/js/'))
-        .pipe(connect.reload());
+        .pipe(browserSync.stream());
 });
 
 gulp.task('images', function () {
@@ -84,7 +84,7 @@ gulp.task('images', function () {
             pngquant: true,
             optipng: true,
             zopflipng: true,
-            jpegRecompress: false,
+            jpegRecompress: true,
             jpegoptim: true,
             mozjpeg: true,
             gifsicle: true,
@@ -92,7 +92,7 @@ gulp.task('images', function () {
             concurrent: 10
         })))
         .pipe(gulp.dest('public/images/'))
-        .pipe(connect.reload());
+        .pipe(browserSync.stream());
 });
 
 //Clean
@@ -100,20 +100,20 @@ gulp.task('clean', function () {
     del.sync(['public/**', '!public']);
 });
 
-//Connect
-gulp.task('connect', function () {
-    connect.server({
-        root: 'public',
-        livereload: true
+//browser-sync
+gulp.task('browser-sync', function () {
+    browserSync.init({
+        server: {
+            baseDir: "public/"
+        }
     });
-});
-
-//Watch
-gulp.task('watch', function () {
     gulp.watch('assets/scss/*.scss', ['scss']);
     gulp.watch('assets/css/*.css', ['css']);
     gulp.watch('assets/html/**/*.html', ['html']);
-    gulp.watch('assets/js/*.js', ['js']);
+    gulp.watch('assets/js/*.js', ['js'], function (done) {
+        browserSync.reload();
+        done();
+    });
     gulp.watch('assets/images/*', ['images']);
 });
 
