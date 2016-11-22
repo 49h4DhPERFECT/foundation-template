@@ -9,7 +9,6 @@ var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
 var cache = require('gulp-cache');
 var image = require('gulp-image');
-var livereload = require('gulp-livereload');
 var browserSync = require('browser-sync').create();
 
 var browsers = ['last 2 versions', 'ie >= 9', 'and_chr >= 2.3'];
@@ -105,7 +104,8 @@ gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
             baseDir: "public/"
-        }
+        },
+        notify: false
     });
     gulp.watch('assets/scss/*.scss', ['scss']);
     gulp.watch('assets/css/*.css', ['css']);
@@ -118,7 +118,7 @@ gulp.task('browser-sync', function () {
 });
 
 //Default
-gulp.task('default', ['compile', 'connect', 'watch']);
+gulp.task('default', ['compile', 'browser-sync']);
 
 //Compile
 gulp.task('compile', ['clean', 'scss', 'fonts', 'js', 'images', 'html']);
