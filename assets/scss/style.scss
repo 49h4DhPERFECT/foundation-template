@@ -49,10 +49,12 @@
 //@include motion-ui-animations;
 
 //Project files
+@import "variables";
 @import "base";
-@import "objects";
-@import "header";
-@import "footer";
-@import "index";
-@import "ui";
+@import "layout";
+@import "modules/index";
+@import "partials/header";
+@import "partials/footer";
+@import "state";
+@import "theme";
 @import "trumps";
