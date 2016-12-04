@@ -145,8 +145,8 @@ gulp.task('images_build', function () {
         .pipe(image({
             pngquant: true,
             optipng: true,
-            zopflipng: true,
-            jpegRecompress: true,
+            zopflipng: false,
+            jpegRecompress: false,
             jpegoptim: true,
             mozjpeg: true,
             gifsicle: true,
