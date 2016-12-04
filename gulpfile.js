@@ -19,7 +19,7 @@ var uglify = require('gulp-uglify');
 
 // Variables
 var browsers = ['last 2 versions', 'ie >= 9', 'ios >= 7'];
-var includePaths =[
+var includePaths = [
     'node_modules/foundation-sites/scss'
     // 'node_modules/motion-ui/src'
 ];
@@ -34,10 +34,10 @@ var jsConcat = [
 
 // Tasks
 gulp.task('scss', function () {
-    return gulp.src('assets/scss/**/*.scss')
+    return gulp.src('assets/scss/*.scss')
         .pipe(plumber({
             errorHandler: function (error) {
-                console.log(error.message);
+                console.log(error);
                 this.emit('end');
             }
         }))
@@ -46,14 +46,14 @@ gulp.task('scss', function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/css'))
         .pipe(plumber.stop())
-        .pipe(browserSync.stream());
+        .pipe(browserSync.stream())
 });
 
 gulp.task('scss_build', function () {
-    return gulp.src('assets/scss/**/*.scss')
+    return gulp.src('assets/scss/*.scss')
         .pipe(plumber({
             errorHandler: function (error) {
-                console.log(error.message);
+                console.log(error);
                 this.emit('end');
             }
         }))
@@ -62,7 +62,7 @@ gulp.task('scss_build', function () {
             browsers: browsers
         }))
         .pipe(uncss({
-            html: ['assets/html/**/*'],
+            html: ['assets/html/**/*.html'],
             ignore: [
                 new RegExp('^\.is-.*')
             ]
@@ -83,20 +83,20 @@ gulp.task('html',function () {
             helpers: 'assets/html/helpers/'
         }))
         .pipe(gulp.dest('public'))
-        .pipe(browserSync.stream());
+        .pipe(browserSync.stream())
 });
 
 gulp.task('fonts', function () {
-   gulp.src('assets/fonts/*')
-       .pipe(gulp.dest('public/fonts'))
-       .pipe(browserSync.reload);
+    gulp.src('assets/fonts/**')
+        .pipe(gulp.dest('public/fonts'))
+        .pipe(browserSync.stream())
 });
 
 gulp.task('js', function () {
     return gulp.src(jsConcat)
         .pipe(plumber({
             errorHandler: function (error) {
-                console.log(error.message);
+                console.log(error);
                 this.emit('end');
             }
         }))
@@ -108,14 +108,14 @@ gulp.task('js', function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('public/js/'))
         .pipe(plumber.stop())
-        .pipe(browserSync.reload);
+        .pipe(browserSync.stream())
 });
 
 gulp.task('js_build', function () {
     return gulp.src(jsConcat)
         .pipe(plumber({
             errorHandler: function (error) {
-                console.log(error.message);
+                console.log(error);
                 this.emit('end');
             }
         }))
@@ -131,14 +131,14 @@ gulp.task('js_build', function () {
 gulp.task('images', function () {
     gulp.src('assets/images/*')
         .pipe(gulp.dest('public/images/'))
-        .pipe(browserSync.reload);
+        .pipe(browserSync.stream())
 });
 
 gulp.task('images_build', function () {
     gulp.src('assets/images/*')
         .pipe(plumber({
             errorHandler: function (error) {
-                console.log(error.message);
+                console.log(error);
                 this.emit('end');
             }
         }))
@@ -178,10 +178,10 @@ gulp.task('browser-sync', function () {
 });
 
 //Compile
-gulp.task('compile', ['clean', 'fonts', 'images', 'scss', 'js', 'html']);
+gulp.task('compile', ['clean', 'html', 'fonts', 'images', 'scss', 'js']);
 
 //Build
-gulp.task('build', ['clean', 'fonts', 'images_build', 'scss_build', 'js_build', 'html']);
+gulp.task('build', ['clean', 'html', 'fonts', 'images_build', 'scss_build', 'js_build']);
 
 //Default
 gulp.task('default', ['compile', 'browser-sync']);
