@@ -61,15 +61,16 @@ gulp.task('scss_build', function () {
         .pipe(autoprefixer({
             browsers: browsers
         }))
-        .pipe(uncss({
-            html: ['assets/html/**/*.html'],
-            ignore: [
-                new RegExp('^\.is-.*')
-            ]
-        }))
+        // Disabled cause destroy animations and so on.
+        // .pipe(uncss({
+        //     html: ['assets/html/**/*.html'],
+        //     ignore: [
+        //         new RegExp('^\.is-.*')
+        //     ]
+        // }))
         .pipe(cleanCSS({compatibility: '*'}))
         .pipe(gulp.dest('public/css'))
-        .pipe(plumber.stop())
+        .pipe(plumber.stop());
 });
 
 gulp.task('html',function () {
