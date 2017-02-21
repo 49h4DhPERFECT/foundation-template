@@ -1,12 +1,12 @@
 {
-  "name": "projectStab",
+  "name": "foundation-template",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Artem Slepets",
+  "author": "Artem Slepets(https://www.linkedin.com/in/artemslepets/)",
   "license": "ISC",
   "devDependencies": {
     "babel-preset-es2015": "^6.14.0",
