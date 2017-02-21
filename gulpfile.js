@@ -25,7 +25,7 @@ var includePaths = [
 ];
 var jsConcat = [
     'node_modules/foundation-sites/vendor/jquery/dist/jquery.min.js',
-    'node_modules/foundation-sites/js/foundation.core.js',
+    // 'node_modules/foundation-sites/js/foundation.core.js',
     // 'node_modules/foundation-sites/js/foundation.util.mediaQuery.js',
     // 'node_modules/foundation-sites/js/foundation.util.timerAndImageLoader.js',
     // 'node_modules/foundation-sites/js/foundation.equalizer.js',

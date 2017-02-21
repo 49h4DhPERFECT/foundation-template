@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // Foundation init
-    $(document).foundation();
+    // $(document).foundation();
 
     // Variables
 
