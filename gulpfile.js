@@ -61,12 +61,12 @@ gulp.task('scss_build', function () {
         .pipe(autoprefixer({
             browsers: browsers
         }))
-        .pipe(uncss({
-            html: ['build/*.html'],
-            ignore: [
-                new RegExp('^\.is-.*')
-            ]
-        }))
+        // .pipe(uncss({
+        //     html: ['build/*.html'],
+        //     ignore: [
+        //         new RegExp('^\.is-.*')
+        //     ]
+        // }))
         .pipe(cleanCSS({compatibility: '*'}))
         .pipe(gulp.dest('build/css'))
         .pipe(plumber.stop());
